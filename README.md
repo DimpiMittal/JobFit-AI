@@ -1,102 +1,35 @@
 # JobFit-AI
 
-**JobFit-AI** is a Django-based web application that analyzes resumes using AI and provides feedback, skills extraction, job matching, and recommendations based on user preferences. It integrates NLP models from Hugging Face and provides actionable insights for both candidates and recruiters.
+**JobFit-AI** is an AI-powered resume analysis and job matching platform. It helps candidates optimize their resumes, extract key skills, generate actionable feedback, and discover jobs that match their profile and preferences. Built using Django and advanced NLP models, JobFit-AI bridges the gap between talent and opportunity.
 
 ---
 
-## Table of Contents
+## Description
 
-- [Features](#features)  
-- [Tech Stack](#tech-stack)  
-- [Installation](#installation)  
-- [Usage](#usage)  
-- [Screenshots](#screenshots)  
-- [Folder Structure](#folder-structure)  
-- [Contributing](#contributing)  
-- [License](#license)  
+JobFit-AI leverages artificial intelligence to evaluate resumes and provide insights into strengths, weaknesses, and suggested improvements. It extracts key skills and education details, summarizes the resume, and matches users with relevant job openings based on location, experience, skills, degree, and CGPA. This tool empowers students, interns, and professionals to enhance their job application process and increases the likelihood of landing the right job.
 
 ---
 
-## Features
+## Features / Uses
 
-- Upload and analyze resumes in multiple formats.  
-- AI-powered resume feedback and improvement suggestions.  
-- Skills extraction and summary generation.  
-- Job matching based on resume, skills, CGPA, and user preferences.  
-- Filter jobs by location, experience, job type, and skills.  
-- Simple and clean user interface.
+- **Resume Analysis:** AI-powered review of resumes with feedback on strengths, weaknesses, and areas of improvement.  
+- **Skill Extraction:** Automatically identifies technical and soft skills mentioned in resumes.  
+- **Education Insights:** Extracts degrees, CGPA, and other educational details.  
+- **Job Matching:** Suggests jobs based on skills, experience, degree, and user preferences.  
+- **Custom Filters:** Filter jobs by location, job type, required skills, and experience.  
+- **User-Friendly Interface:** Clean and intuitive design for smooth resume upload and job search.  
 
 ---
 
 ## Tech Stack
 
-- **Backend:** Python, Django  
-- **Frontend:** HTML, CSS, JavaScript  
-- **AI/NLP:** Hugging Face Transformers, LangChain, Flan-T5, DistilBART  
-- **Database:** SQLite (default, can be replaced with PostgreSQL/MySQL)  
-- **Other Libraries:** pandas, numpy, re (regex for parsing), decouple (environment variables)
-
----
-
-## Installation
-
-1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/DimpiMittal/JobFit-AI.git
-    cd JobFit-AI
-    ```
-
-2. **Create a virtual environment:**
-    ```bash
-    python -m venv venv
-    ```
-
-3. **Activate the virtual environment:**
-    - Windows:
-      ```bash
-      venv\Scripts\activate
-      ```
-    - macOS/Linux:
-      ```bash
-      source venv/bin/activate
-      ```
-
-4. **Install required dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-5. **Set up environment variables:**
-    - Create a `.env` file in the project root:
-      ```
-      SECRET_KEY=your_django_secret_key
-      HUGGINGFACEHUB_API_TOKEN=your_huggingface_token
-      DEBUG=True
-      ```
-
-6. **Apply migrations:**
-    ```bash
-    python manage.py migrate
-    ```
-
-7. **Run the development server:**
-    ```bash
-    python manage.py runserver
-    ```
-
-8. Open your browser and go to:  
-    ```
-    http://127.0.0.1:8000/
-    ```
-
----
-
-## Usage
-
-1. Upload your resume on the homepage.  
-2. View AI-generated feedback, skill extraction, and summary.  
-3. Search for jobs based on preferences like location, skills, experience, and job type.  
-4. View matched jobs ranked by relevance.  
+- **Backend:** Python, Django – For server-side logic, database handling, and web application framework.  
+- **Frontend:** HTML, CSS, JavaScript – For interactive and responsive user interface.  
+- **AI / NLP:**  
+  - **Hugging Face Transformers** – NLP models like Flan-T5 and DistilBART for text summarization, feedback generation, and analysis.  
+  - **LangChain** – AI orchestration and pipeline management.  
+- **Database:** SQLite (default) – Stores resume data and job information.  
+- **Libraries & Tools:** pandas, numpy, regex, python-decouple (for environment variables management).  
 
 ---
 
