@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JobFit AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans transition-colors duration-300" id="page-body">
+
+  <!-- Header -->
+  <header class="w-full fixed top-0 left-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-md z-50 flex justify-between items-center px-6 py-4 transition-colors">
+    <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">JobFit AI</h1>
+    <div class="flex items-center gap-4">
+      <button id="theme-toggle" class="px-3 py-2 rounded-lg bg-indigo-100 dark:bg-gray-700 hover:bg-indigo-200 dark:hover:bg-gray-600 text-indigo-800 dark:text-gray-100 shadow-md transition">
+        ☀️
+      </button>
+      <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md transition">Login</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="pt-40 pb-20 bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600 text-center text-white">
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-lg">JobFit AI</h1>
+    <h2 class="text-2xl md:text-3xl font-semibold mb-4">
+      Smarter Applications with <span id="typing" class="text-yellow-300"></span>
+    </h2>
+    <p class="text-lg max-w-2xl mx-auto opacity-90">
+      Upload your resume, set preferences, and let AI personalize your job search like never before.
+    </p>
+    <div class="mt-8">
+      <a href="#upload-section" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-xl shadow-lg transition">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Resume Upload -->
+  <section id="upload-section" class="py-16 px-6 max-w-3xl mx-auto text-center section">
+    <h3 class="text-2xl font-semibold mb-8 text-indigo-600 dark:text-indigo-400">Step 1: Upload Your Resume</h3>
+    <form id="upload-form" method="post" enctype="multipart/form-data" action="{% url 'upload_resume' %}" class="space-y-4">
+      {% csrf_token %}
+      <label for="resumeInput" class="flex flex-col items-center justify-center border-2 border-dashed border-indigo-400 dark:border-indigo-600 rounded-2xl bg-indigo-50 dark:bg-gray-800 hover:bg-indigo-100 dark:hover:bg-gray-700 cursor-pointer transition p-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-indigo-500 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"/>
+        </svg>
+        <p class="text-lg font-medium">Drop your resume here or click to upload</p>
+        <small class="text-gray-500 dark:text-gray-400">PDF or DOCX only, max 2MB</small>
+      </label>
+      <input type="file" id="resumeInput" name="resume_file" accept=".pdf,.docx" class="hidden">
+      <div id="file-info" class="hidden text-green-600 mt-2">
+        <p><strong>Uploaded:</strong> <span id="file-name"></span></p>
+      </div>
+
+      <button type="button" id="parse-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-md transition w-full disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+        Parse Resume
+      </button>
+
+      <div id="parsing-status" class="hidden mt-4 text-blue-600 font-medium">
+        Parsing resume, please wait...
+      </div>
+    </form>
+  </section>
+
+  <!-- Job Preferences -->
+  <section class="py-16 bg-gray-100 dark:bg-gray-800 px-6 section">
+    <div class="max-w-3xl mx-auto text-center">
+      <h3 class="text-2xl font-semibold mb-6 text-indigo-600 dark:text-indigo-400">Step 2: Job Search Preferences</h3>
+      <form method="post" action="{% url 'search_jobs' %}" class="space-y-4" id="preferences-form">
+        {% csrf_token %}
+        <input type="text" name="location" placeholder="Location" class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none">
+        <input type="text" name="skills" placeholder="Required Skills (comma-separated)" class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none">
+        <input type="number" name="experience" placeholder="Years of Experience" class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none">
+        <select name="job_type" class="w-full px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <option value="fulltime">Full-time</option>
+          <option value="parttime">Part-time</option>
+          <option value="remote">Remote</option>
+        </select>
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-md transition w-full disabled:opacity-50 disabled:cursor-not-allowed" id="find-jobs-btn" disabled>
+          Find Jobs
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-gray-900 py-6 text-center text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 shadow-inner">
+    <p>&copy; 2025 JobFit AI. All rights reserved.</p>
+  </footer>
+
+  <script>
+    ScrollReveal().reveal('.section', { delay: 200, distance: '50px', origin: 'bottom', duration: 1000, reset: true });
+    new Typed('#typing', {
+      strings: ['AI Resume Parsing', 'Smart Job Matching', 'Cover Letter Generation', 'Automated Applications'],
+      typeSpeed: 60,
+      backSpeed: 40,
+      loop: true,
+    });
+
+    const fileInput = document.getElementById('resumeInput');
+    const fileInfo = document.getElementById('file-info');
+    const fileName = document.getElementById('file-name');
+    const parseBtn = document.getElementById('parse-btn');
+    const parsingStatus = document.getElementById('parsing-status');
+    const findJobsBtn = document.getElementById('find-jobs-btn');
+
+    fileInput.addEventListener('change', function () {
+      if (fileInput.files.length > 0) {
+        fileName.innerText = fileInput.files[0].name;
+        fileInfo.classList.remove("hidden");
+        parseBtn.disabled = false;
+      }
+    });
+
+    // AJAX resume parsing
+    parseBtn.addEventListener('click', function () {
+      if (fileInput.files.length === 0) return;
+      parseBtn.disabled = true;
+      parsingStatus.classList.remove("hidden");
+
+      const formData = new FormData();
+      formData.append('resume_file', fileInput.files[0]);
+      formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+      fetch("{% url 'upload_resume' %}", {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        parsingStatus.innerText = "Resume parsed successfully!";
+        findJobsBtn.disabled = false;
+      })
+      .catch(error => {
+        parsingStatus.innerText = "Error parsing resume. Try again.";
+        parseBtn.disabled = false;
+      });
+    });
+
+    // Dark/Light Mode Toggle
+    const body = document.getElementById("page-body");
+    const themeToggle = document.getElementById("theme-toggle");
+
+    if (localStorage.getItem("theme") === "dark") enableDark();
+    themeToggle.addEventListener("click", () => {
+      if (body.classList.contains("dark")) disableDark();
+      else enableDark();
+    });
+    function enableDark() {
+      body.classList.add("dark", "bg-gray-900", "text-white");
+      body.classList.remove("bg-gray-50", "text-gray-900");
+      themeToggle.innerText = "🌙";
+      localStorage.setItem("theme", "dark");
+    }
+    function disableDark() {
+      body.classList.remove("dark", "bg-gray-900", "text-white");
+      body.classList.add("bg-gray-50", "text-gray-900");
+      themeToggle.innerText = "☀️";
+      localStorage.setItem("theme", "light");
+    }
+  </script>
+</body>
+</html>
+
